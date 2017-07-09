@@ -1,0 +1,531 @@
+<!DOCTYPE html><html>
+
+<head>
+<meta charset="utf-8">
+<title>セールストークの設計</title>
+<style type="text/css">
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+</head>
+<body>
+<h1 id="toc_0">セールストークの設計</h1>
+
+<h2 id="toc_1">前提</h2>
+
+<p>セールス　＝　顧客と話す</p>
+
+<ul>
+<li>セールスとは顧客セグメントと課題を検証すること</li>
+<li>セールスとはプロダクトを開発し検証すること</li>
+<li>セールスとは収益構造を検証すること</li>
+</ul>
+
+<p>セールス　＝　顧客と話してビジネスモデルを検証する</p>
+
+<p><img src="https://s3.amazonaws.com/ai-standard/eigyou3.png" alt=""></p>
+
+<h3 id="toc_2">アポイントメント</h3>
+
+<p>どのようなメールの文章がいいか？のPDCAも回していく。
+<img src="https://s3.amazonaws.com/ai-standard/eigyou4.png" alt=""></p>
+
+<h4 id="toc_3">少なくとも6回コンタクトする</h4>
+
+<p><img src="https://s3.amazonaws.com/ai-standard/eigyou5.png" alt=""></p>
+
+<h2 id="toc_4">セールスの手順</h2>
+
+<p><img src="https://s3.amazonaws.com/ai-standard/eigyou2.png" alt=""></p>
+
+<p>大きく分けると以下の３つ</p>
+
+<ul>
+<li>①イントロダクション</li>
+<li>②質問・提案</li>
+<li>③テストクロージング・クロージング</li>
+</ul>
+
+<h2 id="toc_5">①イントロダクション(人間関係・信頼獲得)</h2>
+
+<h3 id="toc_6">自己紹介</h3>
+
+<p>人の<strong>第一印象</strong>は、出会って数秒で決まる。そしてその印象を変えるのには、相当時間がかかる。</p>
+
+<p>まず、話す前に大切なのは非言語の部分。表情や、姿勢、服装などでマイナスなイメージをもたれないようにする。</p>
+
+<ul>
+<li><strong>表情</strong>：笑顔</li>
+<li><strong>姿勢</strong>：胸を張るという意識を心がける（自信があるように見える）</li>
+<li><strong>服装</strong>：顧客の基準に合わせる</li>
+</ul>
+
+<p>①②で、<strong>信頼出来る人</strong>というイメージを相手に与えること。</p>
+
+<p>過去　→　現在　→　未来の順で、自分のストーリーを紹介する。ビジョンを話す。<strong>熱意</strong>が伝わるように。</p>
+
+<p>相手に、自分の価値観・考え方を示し、警戒心を解く。</p>
+
+<p>このときのトナリティーもきちんと設計すること。練習を繰り返し、自然にできるように。</p>
+
+<p>短時間での信頼関係構築には、高いラポール力が必要。訓練を繰り返すことが大切。</p>
+
+<h2 id="toc_7">②質問・提案</h2>
+
+<h4 id="toc_8">セールスストーリー（大前提）</h4>
+
+<pre><code class="language-none">「質問と説明の割合は8対2」
+顧客が困っていることを質問によって明確にする（問題意識を持ってもらう）。
+　　　　▼
+「うちの商品ならその悩みを解決できます」と提案すること。　＋　行動のハードルを下げること。</code></pre>
+
+<h3 id="toc_9">流れ</h3>
+
+<ul>
+<li>理想の把握</li>
+<li>理想の具体化</li>
+<li>現状の把握</li>
+<li>理想までのプロセス設計</li>
+</ul>
+
+<h4 id="toc_10">理想の把握</h4>
+
+<p>まずは、相手が理想とする状態を把握する。企業のミッションや、部署の役割なども把握。
+なぜそれが理想なのか？それを達成するとどんなことがおきるのか？を明確に。</p>
+
+<h4 id="toc_11">理想の具体化</h4>
+
+<p>「理想の把握」の所で得た情報をもとに、それをさらに具体化する。</p>
+
+<p>理想を達成できない最大の原因は、理想が具体的でなくて、日々のアクションに逆算できてない場合が多い。したがって、理想状態を具体的にイメージ出来るようにしていく。</p>
+
+<p>理想像を具体化することで、それに対するニーズが強くなる。</p>
+
+<h4 id="toc_12">現状の把握</h4>
+
+<p>具体的な理想像が把握できたら、現状をヒアリング。</p>
+
+<p>なぜ理想が達成されてないのか？現状の代替手段などをヒアリング。</p>
+
+<p>理想と現状のギャップが、<strong>課題</strong>と定義できる。
+<img src="https://s3.amazonaws.com/ai-standard/eigyou.png" alt=""></p>
+
+<h4 id="toc_13">理想までのプロセス設計</h4>
+
+<p>何を、いつまでに、どのくらい達成したいのか？</p>
+
+<p>目標から逆算させて、<strong>イマ</strong>するべきことをきちんと意識させる事が大切。</p>
+
+<h3 id="toc_14">質問のコツ</h3>
+
+<h4 id="toc_15">3つの質問ワード</h4>
+
+<p>「たとえば？」で行動を聞き、「なぜ？」で考え、「ということは？」でどう感じているか？やどう思っているか？を聞くことで、その人の内面に深く入る。</p>
+
+<p>要望を伝えてくれたときには、「なぜ？」でどんどん深掘りしていきます。</p>
+
+<p>そうしていくうちに、真のニーズにたどりつきやすくなる。</p>
+
+<p>ex.) 
+「要望」：コンビニ行きたい。
+なぜ？　→　アイスが食べたい。
+なぜ？　→　熱いから体を冷やしたい。</p>
+
+<p>となると、コンビニに行くというのは表面的なニーズだったということがわかる。</p>
+
+<h4 id="toc_16">否定は絶対にしない。やることは、褒めること。</h4>
+
+<p>問題意識ですが、<strong>多くの人は否定から引き出そう</strong>とする。</p>
+
+<ul>
+<li>「あなたの使ってるモノは高いし古いタイプのモノですよ？」</li>
+<li>「こんなご時世に保険に入ってないなんて不用心すぎませんか？」</li>
+</ul>
+
+<p>しかしこのやり方では正直<strong>イラっと</strong>してしまう場合がある。</p>
+
+<p>→　自分が選んだものを真実であれ否定されるのは気分の良いことではない。</p>
+
+<p>→　素直に聞けず反発してしまい「高くてもおれはこれが好きなんだ！」と言われる可能性も。</p>
+
+<p>なので、問題意識の引き出す秘訣は逆の方法。 <strong>褒めるコト</strong>です。</p>
+
+<ul>
+<li>「もう既にいいやつを持ってるんですねぇ。それなら相当良い結果が出てるんじゃないですか？」</li>
+<li>「保険に入ってないなんて、毎日健康な生活を送ってる証拠ですね！羨ましい！」</li>
+</ul>
+
+<p>ほとんどの人は現在の状況を褒められれば嬉しくなりますし、羨ましがってあげれば照れます。そして嬉しくなって照れた後ほとんどの人は謙遜して「そんなコトないんだよー。実は・・・」と自分から問題意識を出してくれます。</p>
+
+<h4 id="toc_17">オープンクエッションとクローズドクエスチョン</h4>
+
+<p>オープンクエッション：「どうおもいますか？」などの、制約を設けず、相手に自由に答えさせる質問</p>
+
+<p>クローズドクエスチョン：相手がYESもしくはNOで答える質問</p>
+
+<h5 id="toc_18">オープンクエッション</h5>
+
+<p>相手から、より多くの情報を引き出したいときに使います。</p>
+
+<pre><code class="language-none">例）何が？なぜ？誰が？どれが？いつ？現在は？金額は？</code></pre>
+
+<h4 id="toc_19">クローズドクエスチョン</h4>
+
+<p>相手にYESを言わせたい時に使用。</p>
+
+<p>■　ポイント</p>
+
+<p>クローズドクエッションを、自分の商品について <strong>意図的</strong>に Yes （賛同）を取るために使うと、相手は売り込まれているという不信感を持たれる場合が多いので、やめたほうがいい。</p>
+
+<p>よく使われるものとしては、<strong>相手が言ったことを確認するような感じ</strong>でクローズドクエスチョンをすると不自然ではない。</p>
+
+<p>【参考文献】</p>
+
+<ul>
+<li><a href="https://goo.gl/ANLyrH">「3つの言葉」だけで売上が伸びる質問型営業</a></li>
+<li><a href="http://lets-business.com/sales/sales-talk-2/">言い回しで成果が変わる！？営業トーク集と例文1５パターン</a></li>
+</ul>
+
+<h3 id="toc_20">提案</h3>
+
+<p>※　金額提示はまだしない。テストクロージングをしたあとに、金額提示をする。</p>
+
+<p>→　金額を言う前に、<strong>金額以外の断る理由をなくす</strong>。</p>
+
+<h2 id="toc_21">③テストクロージング・クロージング</h2>
+
+<p>テストクロージングとは？</p>
+
+<pre><code class="language-none">商談の途中で、お客さんがその気（やりたい、買いたい）になっているかを確認するテクニック</code></pre>
+
+<p>もし仮に導入するとしたら〜〜などの言葉で、購入可能性・断る理由を探していく。</p>
+
+<p>キーワードは、<strong>「もし仮に◯◯だとすれば、どうでしょうか？」</strong></p>
+
+<p>会話のなかで、このようなテストクロージングをすることで、「一貫性の原理」が働きます。</p>
+
+<p>この場合、買うという前提を一度受け入れた（仮ではあるけれど）という心理状態になります。</p>
+
+<p>テストクロージングでは、お客様のYESを引き出すことが大切。人は小さなYESを繰り返していると、そのあとNOを言いづらくなるという性質がある。</p>
+
+<p>ポイントは、お客様の、<strong>断る理由を把握し、なくすこと</strong>・<strong>行動のハードルを下げること</strong>。</p>
+
+<h3 id="toc_22">言わせてはいけない言葉「検討します」</h3>
+
+<p>お客さまから「検討します」「考えさせて下さい」と言われた時は、クロージングには結びつかない。
+まずは、お客さまの「検討します」「考えさせて下さい」という決断を尊重して、まずは受容する。</p>
+
+<p>※　このとき、反論は絶対にしてはいけない。 </p>
+
+<pre><code class="language-none">「ところで、どんな点に引っかかっていますか？」
+「どんな点を検討されるのでしょうか？」</code></pre>
+
+<p>と質問で掘り下げていく。</p>
+
+<p>掘り下げながら<strong>「もし、その点がクリアされたら、いかがですか？」</strong>と、何回かテストクロージングを入れていくのも効果的。</p>
+
+<h3 id="toc_23">クロージングしたら沈黙を楽しむ</h3>
+
+<p>「では、今回はこちらのプランでよろしいですか？」とクロージングしたら、後はお客様の顔を笑顔で見つめる。</p>
+
+<p>ここまで気づき上げた関係をお客さまも壊したくはないので、一生懸命考えます。ここで、変にフォローをいれたりすると、相手の思考・決断の時間を奪ってしまうことになります。</p>
+
+
+</body>
+
+</html>
