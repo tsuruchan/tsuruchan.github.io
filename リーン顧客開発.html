@@ -1,0 +1,464 @@
+<!DOCTYPE html><html>
+
+<head>
+<meta charset="utf-8">
+<title>リーン顧客開発</title>
+<style type="text/css">
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+</head>
+<body>
+<h1 id="toc_0">リーン顧客開発</h1>
+
+<h2 id="toc_1">顧客開発とは何か？</h2>
+
+<p>顧客開発＝顧客のニーズや課題を理解し、適せtなソリューションを特定すること、及びそのための仮説検証サイクル</p>
+
+<ul>
+<li>顧客は誰か？</li>
+<li>顧客の課題・ニーズは何か？</li>
+<li>顧客の現在の行動は何か？</li>
+<li>顧客が最も進んで購入するソリューションは何か？</li>
+<li>顧客の意思決定、調達、購入、使用に合わせたソリューションの提供方法はなにか？</li>
+</ul>
+
+<p>顧客開発では、仮説や思い込みが本当にその通りなのか徹底的に検証します。</p>
+
+<h2 id="toc_2">リーン顧客開発の５つのステップ</h2>
+
+<ul>
+<li>仮説を立てること</li>
+<li>潜在的な顧客イメージを明確化すること</li>
+<li>適切に質問すること</li>
+<li>受け取った答えを正しく解釈すること</li>
+<li>製品の使用を明確化し、学びを取り込み続けること。</li>
+</ul>
+
+<h3 id="toc_3">仮説の立て方</h3>
+
+<pre><code class="language-none">「顧客像」は「タスク」をするとき、「課題の内容」という課題がある。</code></pre>
+
+<pre><code class="language-none">「顧客像」は「制限/制約」のために、「課題」を体験している。</code></pre>
+
+<p>この仮説を立てる際のポイントは、</p>
+
+<p>「<strong>誰が？</strong>」：顧客像が明確になる</p>
+
+<p>「<strong>何を？</strong>」「<strong>いつ？</strong>」「<strong>どのくらい？</strong>」：顧客の課題が明確になる</p>
+
+<p>「<strong>なぜ？</strong>」：成し遂げたいタスクや制約要因が明確になる。</p>
+
+<h3 id="toc_4">顧客像の明確化</h3>
+
+<p>ここでのポイントは、出来るだけターゲットを絞ること。</p>
+
+<p><strong>１００人</strong>が持っている<strong>薄い課題</strong>より、<strong>１人</strong>が持っている<strong>強い課題</strong>にフォーカスし、その顧客像を書き出す。</p>
+
+<h4 id="toc_5">toCの場合</h4>
+
+<p>（1）顧客の属性で分ける
+年齢・性別・職業・家族構成・所得などです。</p>
+
+<p>（2）顧客の地域で分ける
+住所やその地域の気候・規模などの特徴です。</p>
+
+<p>（3）顧客の心理的特徴や行動的特徴から分ける
+商品の購入基準（たとえば、価格なのか品質なのか）、ネット通販に対する抵抗の有無、新しいものに対する反応、じっくり選びたいのか時間をかけたくないのか、使用頻度などです。</p>
+
+<h3 id="toc_6">質問の仕方</h3>
+
+<p>質問で明らかにしたいのは、「顧客の課題」と「魅力的なソリューションは何か」。</p>
+
+<h4 id="toc_7">顧客開発の基本的な質問</h4>
+
+<ul>
+<li>現在は___をどのような方法で行っていますか？</li>
+<li>___を行うときにどのような[ツール/製品/アプリケーション/裏技]を使っていますか？</li>
+<li>もし魔法の杖を振って、できないことが何でもできるとしたら何をしますか？</li>
+</ul>
+
+<h4 id="toc_8">顧客が現在している行動</h4>
+
+<p>顧客が現在している行動を知ることで、</p>
+
+<ul>
+<li>顧客は今何ができるか？</li>
+<li>顧客は現在どのような行動に慣れ親しんでいるか？</li>
+<li>なぜその行動をしているか？</li>
+<li>顧客はどのような意思決定をしているか？</li>
+</ul>
+
+<p>を理解できるようになります。</p>
+
+<p>これらの回答を貰ったときに、「なぜ？」「いつ？」「誰と？」と質問することで深掘りします。</p>
+
+<p>こういったところから、顧客の<strong>潜在的なニーズ</strong>を洞察していきます。</p>
+
+<h4 id="toc_9">認識されていない課題</h4>
+
+<p>顧客が課題を解決できないのは、アクセスの欠如（顧客は単にこの製品をもっていない）や、モチベーションの欠如（顧客はまともに問題を解決しようとしないだけ）のせいであると考えがちです。</p>
+
+<p>実際には、<strong>多くの顧客は制約を受けています</strong>。
+では、どんな制約を受けているのでしょうか。</p>
+
+<h5 id="toc_10">課題が課題と認識されていない。</h5>
+
+<p>完了すべきタスクがある場合、その人の関心は「そのタスクをどのように最適な方法で完了させるか」ではなく「タスクを完了させる」ことばかりに向けられます。</p>
+
+<p>認識されていない課題に気づくためには、顧客の現在の暮らしと、課題が解決された場合の将来を暗黙的に比較させる状況を作り出す方法があります。それは、課題がどれほど顧客の痛みを引き出しているのかを掘り下げることです。</p>
+
+<h5 id="toc_11">技術的に可能なことについての認識の欠如</h5>
+
+<p>顧客は技術に詳しい場合はあまり多くありません。</p>
+
+<h5 id="toc_12">リソースが限られている</h5>
+
+<p>環境・時間・予算が限られている場合があります。</p>
+
+<h5 id="toc_13">行動を制限する文化的/社会的要因</h5>
+
+<p>組織内の行動が当然になり、習慣化すると、それを疑うきっかけが少なくなります。</p>
+
+<h2 id="toc_14">インタビュー</h2>
+
+<p>インタビューで得に大切な情報は以下です。</p>
+
+<ul>
+<li>仮説をサポートする何か</li>
+<li>仮説を棄却する何か</li>
+<li>意外だと感じられたこと</li>
+<li>強い感情が伴ってること</li>
+</ul>
+
+<h3 id="toc_15">ヒアリングの前提をつくる</h3>
+
+<pre><code class="language-none">お話をする機会を頂きありがとうございます。
+個人的な経験や、○○さんの仕事・暮らしのなかで〜〜がどうなっているか話して下さることが、大変貴重な情報になります。
+なので、わたしはできるだけあなたの話を伺うことに集中させて頂きます。
+
+（toBの場合）
+答えられないことや、秘密なこととかありましたら、それは秘密ですと答えて下さいね。</code></pre>
+
+<h3 id="toc_16">最初の質問</h3>
+
+<pre><code class="language-none">〜〜について教えて下さい</code></pre>
+
+<p>その後、</p>
+
+<ul>
+<li>そのプロセスにはどのくら時間がかかりますか？</li>
+<li>なぜそれが起こると思いますか？</li>
+<li>その出来事によってどのような結果が生じるか？</li>
+<li>意思決定に関与してるのはだれか？</li>
+<li>その種のミスは他にどこで生じてると思いますか？</li>
+<li>そのタスクを最後にしたのはいつですか？</li>
+</ul>
+
+<h4 id="toc_17">掘り下げる</h4>
+
+<p>聞いたことは、内容を要約して自分の言葉に言い換え、間違いがないか相手に確認する。</p>
+
+<p>あとは、クッション言葉が大切。</p>
+
+<p>少し深く入り込む場合は、「答えづらいかと思うのですが〜〜」「細かい所ではあるのですが〜〜」などの言葉を挟むだけで答えやすくなる。</p>
+
+
+</body>
+
+</html>
