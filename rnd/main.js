@@ -33,11 +33,6 @@ function draw() {
   fill(30);
   rect(0, 0, windowWidth, windowHeight);
 
-  // 中央の描画
-  fill(100);
-  arc(windowWidth*0.5, heightWithoutBar*0.5, r, r, (1.5 - 2*(lengthArc/allArc))*PI, 1.5*PI);
-  fill(30);
-  ellipse(windowWidth*0.5, heightWithoutBar*0.5, r*0.85, r*0.85);
   fill("#5ab966");
   textSize(size);
   textAlign(CENTER, CENTER);
