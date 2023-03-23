@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<html>
+<head>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-heatmap.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-data-adapter.min.js"></script>
+  <link href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
+  <link href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">
+  <style type="text/css">
+    html,
+    body,
+    #container {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="container">
+    <p>
+    <label><b>レンジ１を入力</b><br></label>
+    <textarea type="text" cols="100" rows="6" id="rangeText1"></textarea>
+    </p>
+    <p>
+      <label><b>レンジ２を入力</b><br></label>
+      <textarea type="text" cols="100" rows="6" id="rangeText2"></textarea>
+      </p>
+    <input type="button" value="送信" onclick="checkButton()">
+    <hr>
+  </div>
+
+  <script>
+
+    function checkButton() {
+      // レンジのテキストデータをObject形式に変換
+      range_data1 = inputToObject(rangeText1);
+      range_data2 = inputToObject(rangeText2);
+
+      function inputToObject(data) {
+        const dataArray = data.value.split(',');
+        const range_data = {};
+        for (let i = 0; i < dataArray.length; i++) {
+          const item = dataArray[i].split(':');
+          range_data[item[0]] = parseFloat(item[1]);
+        }
+        return range_data;
+      }
+
+      //console.log(data)
+
+      function calDifference(d1, d2) {
+        if (d1) {
+          if (d2) {
+            return d1 - d2;
+          } else {
+            return d1;
+          }
+        } else {
+          return (0 - d2);
+        }
+      }
+
+      // Anychar用の配列
+      const r_data = [];
+
+      //スート判定とコンボ数計算
+      const rankLabels = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"];
+      const suit = ["s", "h", "c", "d"]
+
+      function setCombos() {
+        for (let i = 0; i < 13; i++) {
+          for (let j = 0; j < 13; j++) {
+            if (i == j) {
+              //pair
+              console.log(i);
+              r_data.push({ "x": rankLabels[i], "y": rankLabels[j], "heat": getPairCombos(i, j), "symbol": "" });
+            } else if (i < j) {
+              //OffSuit
+              r_data.push({ "x": rankLabels[i], "y": rankLabels[j], "heat": getOffsuitCombos(i, j), "symbol": "o" });
+            } else {
+              //Suit
+              r_data.push({ "x": rankLabels[i], "y": rankLabels[j], "heat": getSuitCombos(i, j), "symbol": "s" });
+            }
+          }
+
+          function getSuitCombos(i, j) {
+            let combos_sum = 0;
+            for (let k = 0; k < 4; k++) {
+              combos_sum += calDifference(range_data1[`${rankLabels[j]}${suit[k]}${rankLabels[i]}${suit[k]}`], range_data2[`${rankLabels[j]}${suit[k]}${rankLabels[i]}${suit[k]}`])
+            }
+            return combos_sum;
+          }
+
+          function getOffsuitCombos(i, j) {
+            let combos_sum = 0;
+            for (let k = 0; k < 4; k++) {
+              for (let l = 0; l < 4; l++) {
+                if (k == l) continue;
+                combos_sum += calDifference(range_data1[`${rankLabels[i]}${suit[k]}${rankLabels[j]}${suit[l]}`], range_data2[`${rankLabels[i]}${suit[k]}${rankLabels[j]}${suit[l]}`])
+              }
+            }
+            return combos_sum;
+          }
+
+          function getPairCombos(i, j) {
+            let combos_sum = 0;
+            combos_sum += calDifference(range_data1[`${rankLabels[i]}d${rankLabels[j]}c`], range_data2[`${rankLabels[i]}d${rankLabels[j]}c`])
+            combos_sum += calDifference(range_data1[`${rankLabels[i]}h${rankLabels[j]}c`], range_data2[`${rankLabels[i]}h${rankLabels[j]}c`])
+            combos_sum += calDifference(range_data1[`${rankLabels[i]}h${rankLabels[j]}d`], range_data2[`${rankLabels[i]}h${rankLabels[j]}d`])
+            combos_sum += calDifference(range_data1[`${rankLabels[i]}s${rankLabels[j]}c`], range_data2[`${rankLabels[i]}s${rankLabels[j]}c`])
+            combos_sum += calDifference(range_data1[`${rankLabels[i]}s${rankLabels[j]}d`], range_data2[`${rankLabels[i]}s${rankLabels[j]}d`])
+            combos_sum += calDifference(range_data1[`${rankLabels[i]}s${rankLabels[j]}h`], range_data2[`${rankLabels[i]}s${rankLabels[j]}h`])
+            return combos_sum;
+          }
+        }
+      }
+
+      setCombos();
+      console.log(r_data);
+
+
+
+      let checkButton = document.getElementById('chart');
+
+      // create Heat Map Chart
+      var chart = anychart.heatMap(r_data);
+
+      var colorScale = anychart.scales.ordinalColor();
+      // set color for all points
+      colorScale.ranges([
+        { less: -12, color: '#7fbfff' },
+        { from: -12, to: -5, color: '#8ec6ff' },
+        { from: -5, to: -1, color: '#a3d1ff' },
+        { from: -1, to: -0.5, color: '#d6ffff' },
+        { from: -0.5, to: -0.01, color: '#eaffff' },
+        { from: -0.01, to: 0.01, color: '#ffffff' },
+        { from: 0.01, to: 0.5, color: '#fff4ea' },
+        { from: 0.5, to: 1, color: '#ffead6' },
+        { from: 1, to: 5, color: '#ffd1a3' },
+        { from: 5, to: 12, color: '#ffc68e' },
+        { greater: 12, color: '#ffbf7f' }
+      ]);
+      chart.colorScale(colorScale);
+
+      // Sets selection mode for single selection
+      chart.interactivity().selectionMode('none');
+
+      chart.padding([10, 20, 10, 20]);
+
+      // Sets title
+      chart
+        .title()
+        .useHtml(true)
+        .enabled(true)
+        .padding([0, 0, 10, 5])
+        .align('left')
+        .text(
+          'Range difference（range1 - 2） <span style=\'font-size: 13px; color:#B9B9B9\'></span>'
+        );
+
+      // Sets chart labels
+      chart
+        .labels()
+        .enabled(true)
+        .maxFontSize(14)
+        .format(function () {
+          return this.y + this.x + this.getData('symbol') + "\n" + Math.floor(this.getData('heat') * Math.pow(10, 3)) / Math.pow(10, 3)
+        });
+
+      // Turns off axes
+      chart
+        .yAxis(null)
+        .xAxis(null)
+        // Sets chart and hover chart settings
+        .stroke('#fff');
+      chart
+        .hovered()
+        .stroke('6 #fff')
+        .fill('#545f69')
+        .labels({ fontColor: '#fff' });
+
+      // Sets legend
+      chart
+        .legend()
+        .enabled(true)
+        .align('top')
+        .position('right')
+        .itemsLayout('vertical')
+        .padding([2, 10, 0, 20]);
+
+      //Sets tooltip
+      chart
+        .tooltip()
+        .titleFormat(function () {
+          var s = '';
+          if (this.getData('symbol') === 's') s = 'suited';
+          else if (this.getData('symbol') === 'u') s = 'unsuited';
+          return this.x + this.y + ' ' + s;
+        })
+        .format(function () {
+          return 'difference: ' + this.heat;
+        });
+
+      chart.container('container');
+      chart.draw();
+    }
+
+
+  </script>
+</body>
+</html>
