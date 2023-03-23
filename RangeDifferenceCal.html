@@ -2,6 +2,7 @@
 <html lang="ja">
 <html>
 <head>
+  <title>Range Difference Calculator</title>
   <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
   <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
   <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
@@ -41,7 +42,7 @@
 
     }
 
-    able,
+    table,
     td,
     th {
       border: 1px solid #595959;
@@ -56,7 +57,7 @@
     }
 
     th {
-      background: #f0e6cc;
+      background: #b6c5e3;
     }
 
     .even {
@@ -321,7 +322,7 @@
 
 
 
-    result = " <h3>カード別コンボ数</h3><table><tbody><tr><th>カード</th><th>レンジ１</th><th>レンジ２</th><th>差分（1-2）</th></tr>"
+    result = " <h3>カード別コンボ数</h3><table width='50%'><tbody><tr><th>カード</th><th>レンジ１</th><th>レンジ２</th><th>差分（1-2）</th></tr>"
     for (let i = 0; i < cardValues.length; i++) {
       //console.log(`${cardValues[i]}：${(comboSums[cardValues[i]]).toFixed(3)}`);
       r1 = (comboSums[cardValues[i]]).toFixed(3)
