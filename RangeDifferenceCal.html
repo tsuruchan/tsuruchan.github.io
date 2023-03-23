@@ -170,7 +170,11 @@
         .enabled(true)
         .maxFontSize(14)
         .format(function () {
-          return this.y + this.x + this.getData('symbol') + "\n" + Math.floor(this.getData('heat') * Math.pow(10, 3)) / Math.pow(10, 3)
+          if (this.getData('symbol') == "o") {
+            return this.x + this.y + this.getData('symbol') + "\n" + Math.floor(this.getData('heat') * Math.pow(10, 3)) / Math.pow(10, 3)
+          } else {
+            return this.y + this.x + this.getData('symbol') + "\n" + Math.floor(this.getData('heat') * Math.pow(10, 3)) / Math.pow(10, 3)
+          }
         });
 
       // Turns off axes
