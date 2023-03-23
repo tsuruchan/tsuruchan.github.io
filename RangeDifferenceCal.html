@@ -41,6 +41,32 @@
 
     }
 
+    able,
+    td,
+    th {
+      border: 1px solid #595959;
+      border-collapse: collapse;
+    }
+
+    td,
+    th {
+      padding: 3px;
+      width: 30px;
+      height: 25px;
+    }
+
+    th {
+      background: #f0e6cc;
+    }
+
+    .even {
+      background: #fbf8f0;
+    }
+
+    .odd {
+      background: #fefcf9;
+    }
+
   </style>
 </head>
 <body>
@@ -58,189 +84,260 @@
       </p>
     <input type="button" value="送信" onclick="checkButton()" class="button">
     <hr>
-  </div>
+    <div id="output">
+      <br><br>
+    </div>
 
-  <script>
+</body>
 
-    function checkButton() {
-      // レンジのテキストデータをObject形式に変換
-      range_data1 = inputToObject(rangeText1);
-      range_data2 = inputToObject(rangeText2);
+<script>
 
-      function inputToObject(data) {
-        const dataArray = data.value.split(',');
-        const range_data = {};
-        for (let i = 0; i < dataArray.length; i++) {
-          const item = dataArray[i].split(':');
-          range_data[item[0]] = parseFloat(item[1]);
-        }
-        return range_data;
+  function checkButton() {
+    // レンジのテキストデータをObject形式に変換
+    range_data1 = inputToObject(rangeText1);
+    range_data2 = inputToObject(rangeText2);
+
+    function inputToObject(data) {
+      const dataArray = data.value.split(',');
+      const range_data = {};
+      for (let i = 0; i < dataArray.length; i++) {
+        const item = dataArray[i].split(':');
+        range_data[item[0]] = parseFloat(item[1]);
       }
-
-      //console.log(data)
-
-      function calDifference(d1, d2) {
-        if (d1) {
-          if (d2) {
-            return d1 - d2;
-          } else {
-            return d1;
-          }
-        } else {
-          return (0 - d2);
-        }
-      }
-
-      // Anychar用の配列
-      const r_data = [];
-
-      //スート判定とコンボ数計算
-      const rankLabels = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"];
-      const suit = ["s", "h", "c", "d"]
-
-      function setCombos() {
-        for (let i = 0; i < 13; i++) {
-          for (let j = 0; j < 13; j++) {
-            if (i == j) {
-              //pair
-              console.log(i);
-              r_data.push({ "x": rankLabels[i], "y": rankLabels[j], "heat": getPairCombos(i, j), "symbol": "" });
-            } else if (i < j) {
-              //OffSuit
-              r_data.push({ "x": rankLabels[i], "y": rankLabels[j], "heat": getOffsuitCombos(i, j), "symbol": "o" });
-            } else {
-              //Suit
-              r_data.push({ "x": rankLabels[i], "y": rankLabels[j], "heat": getSuitCombos(i, j), "symbol": "s" });
-            }
-          }
-
-          function getSuitCombos(i, j) {
-            let combos_sum = 0;
-            for (let k = 0; k < 4; k++) {
-              combos_sum += calDifference(range_data1[`${rankLabels[j]}${suit[k]}${rankLabels[i]}${suit[k]}`], range_data2[`${rankLabels[j]}${suit[k]}${rankLabels[i]}${suit[k]}`])
-            }
-            return combos_sum;
-          }
-
-          function getOffsuitCombos(i, j) {
-            let combos_sum = 0;
-            for (let k = 0; k < 4; k++) {
-              for (let l = 0; l < 4; l++) {
-                if (k == l) continue;
-                combos_sum += calDifference(range_data1[`${rankLabels[i]}${suit[k]}${rankLabels[j]}${suit[l]}`], range_data2[`${rankLabels[i]}${suit[k]}${rankLabels[j]}${suit[l]}`])
-              }
-            }
-            return combos_sum;
-          }
-
-          function getPairCombos(i, j) {
-            let combos_sum = 0;
-            combos_sum += calDifference(range_data1[`${rankLabels[i]}d${rankLabels[j]}c`], range_data2[`${rankLabels[i]}d${rankLabels[j]}c`])
-            combos_sum += calDifference(range_data1[`${rankLabels[i]}h${rankLabels[j]}c`], range_data2[`${rankLabels[i]}h${rankLabels[j]}c`])
-            combos_sum += calDifference(range_data1[`${rankLabels[i]}h${rankLabels[j]}d`], range_data2[`${rankLabels[i]}h${rankLabels[j]}d`])
-            combos_sum += calDifference(range_data1[`${rankLabels[i]}s${rankLabels[j]}c`], range_data2[`${rankLabels[i]}s${rankLabels[j]}c`])
-            combos_sum += calDifference(range_data1[`${rankLabels[i]}s${rankLabels[j]}d`], range_data2[`${rankLabels[i]}s${rankLabels[j]}d`])
-            combos_sum += calDifference(range_data1[`${rankLabels[i]}s${rankLabels[j]}h`], range_data2[`${rankLabels[i]}s${rankLabels[j]}h`])
-            return combos_sum;
-          }
-        }
-      }
-
-      setCombos();
-      console.log(r_data);
-
-
-
-      let checkButton = document.getElementById('chart');
-
-      // create Heat Map Chart
-      var chart = anychart.heatMap(r_data);
-
-      var colorScale = anychart.scales.ordinalColor();
-      // set color for all points
-      colorScale.ranges([
-        { less: -12, color: '#7fbfff' },
-        { from: -12, to: -5, color: '#8ec6ff' },
-        { from: -5, to: -1, color: '#a3d1ff' },
-        { from: -1, to: -0.5, color: '#d6ffff' },
-        { from: -0.5, to: -0.01, color: '#eaffff' },
-        { from: -0.01, to: 0.01, color: '#ffffff' },
-        { from: 0.01, to: 0.5, color: '#fff4ea' },
-        { from: 0.5, to: 1, color: '#ffead6' },
-        { from: 1, to: 5, color: '#ffd1a3' },
-        { from: 5, to: 12, color: '#ffc68e' },
-        { greater: 12, color: '#ffbf7f' }
-      ]);
-      chart.colorScale(colorScale);
-
-      // Sets selection mode for single selection
-      chart.interactivity().selectionMode('none');
-
-      chart.padding([10, 20, 10, 20]);
-
-      // Sets title
-      chart
-        .title()
-        .useHtml(true)
-        .enabled(true)
-        .padding([0, 0, 10, 5])
-        .align('left')
-        .text(
-          'Range difference（range1 - 2） <span style=\'font-size: 13px; color:#B9B9B9\'></span>'
-        );
-
-      // Sets chart labels
-      chart
-        .labels()
-        .enabled(true)
-        .maxFontSize(14)
-        .format(function () {
-          if (this.getData('symbol') == "o") {
-            return this.x + this.y + this.getData('symbol') + "\n" + Math.floor(this.getData('heat') * Math.pow(10, 3)) / Math.pow(10, 3)
-          } else {
-            return this.y + this.x + this.getData('symbol') + "\n" + Math.floor(this.getData('heat') * Math.pow(10, 3)) / Math.pow(10, 3)
-          }
-        });
-
-      // Turns off axes
-      chart
-        .yAxis(null)
-        .xAxis(null)
-        // Sets chart and hover chart settings
-        .stroke('#fff');
-      chart
-        .hovered()
-        .stroke('6 #fff')
-        .fill('#545f69')
-        .labels({ fontColor: '#fff' });
-
-      // Sets legend
-      chart
-        .legend()
-        .enabled(true)
-        .align('top')
-        .position('right')
-        .itemsLayout('vertical')
-        .padding([2, 10, 0, 20]);
-
-      //Sets tooltip
-      chart
-        .tooltip()
-        .titleFormat(function () {
-          var s = '';
-          if (this.getData('symbol') === 's') s = 'suited';
-          else if (this.getData('symbol') === 'u') s = 'unsuited';
-          return this.x + this.y + ' ' + s;
-        })
-        .format(function () {
-          return 'difference: ' + this.heat;
-        });
-
-      chart.container('container');
-      chart.draw();
+      return range_data;
     }
 
+    //console.log(data)
 
-  </script>
+    function calDifference(d1, d2) {
+      if (d1) {
+        if (d2) {
+          return d1 - d2;
+        } else {
+          return d1;
+        }
+      } else {
+        return (0 - d2);
+      }
+    }
+
+    // Anychar用の配列
+    const r_data = [];
+
+    //スート判定とコンボ数計算
+    const rankLabels = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"];
+    const suit = ["s", "h", "c", "d"]
+
+    function setCombos() {
+      for (let i = 0; i < 13; i++) {
+        for (let j = 0; j < 13; j++) {
+          if (i == j) {
+            //pair
+            console.log(i);
+            r_data.push({ "x": rankLabels[i], "y": rankLabels[j], "heat": getPairCombos(i, j), "symbol": "" });
+          } else if (i < j) {
+            //OffSuit
+            r_data.push({ "x": rankLabels[i], "y": rankLabels[j], "heat": getOffsuitCombos(i, j), "symbol": "o" });
+          } else {
+            //Suit
+            r_data.push({ "x": rankLabels[i], "y": rankLabels[j], "heat": getSuitCombos(i, j), "symbol": "s" });
+          }
+        }
+
+        function getSuitCombos(i, j) {
+          let combos_sum = 0;
+          for (let k = 0; k < 4; k++) {
+            combos_sum += calDifference(range_data1[`${rankLabels[j]}${suit[k]}${rankLabels[i]}${suit[k]}`], range_data2[`${rankLabels[j]}${suit[k]}${rankLabels[i]}${suit[k]}`])
+          }
+          return combos_sum;
+        }
+
+        function getOffsuitCombos(i, j) {
+          let combos_sum = 0;
+          for (let k = 0; k < 4; k++) {
+            for (let l = 0; l < 4; l++) {
+              if (k == l) continue;
+              combos_sum += calDifference(range_data1[`${rankLabels[i]}${suit[k]}${rankLabels[j]}${suit[l]}`], range_data2[`${rankLabels[i]}${suit[k]}${rankLabels[j]}${suit[l]}`])
+            }
+          }
+          return combos_sum;
+        }
+
+        function getPairCombos(i, j) {
+          let combos_sum = 0;
+          combos_sum += calDifference(range_data1[`${rankLabels[i]}d${rankLabels[j]}c`], range_data2[`${rankLabels[i]}d${rankLabels[j]}c`])
+          combos_sum += calDifference(range_data1[`${rankLabels[i]}h${rankLabels[j]}c`], range_data2[`${rankLabels[i]}h${rankLabels[j]}c`])
+          combos_sum += calDifference(range_data1[`${rankLabels[i]}h${rankLabels[j]}d`], range_data2[`${rankLabels[i]}h${rankLabels[j]}d`])
+          combos_sum += calDifference(range_data1[`${rankLabels[i]}s${rankLabels[j]}c`], range_data2[`${rankLabels[i]}s${rankLabels[j]}c`])
+          combos_sum += calDifference(range_data1[`${rankLabels[i]}s${rankLabels[j]}d`], range_data2[`${rankLabels[i]}s${rankLabels[j]}d`])
+          combos_sum += calDifference(range_data1[`${rankLabels[i]}s${rankLabels[j]}h`], range_data2[`${rankLabels[i]}s${rankLabels[j]}h`])
+          return combos_sum;
+        }
+      }
+    }
+
+    setCombos();
+    console.log(r_data);
+
+
+
+    let checkButton = document.getElementById('chart');
+
+    // create Heat Map Chart
+    var chart = anychart.heatMap(r_data);
+
+    var colorScale = anychart.scales.ordinalColor();
+    // set color for all points
+    colorScale.ranges([
+      { less: -12, color: '#7fbfff' },
+      { from: -12, to: -5, color: '#8ec6ff' },
+      { from: -5, to: -1, color: '#a3d1ff' },
+      { from: -1, to: -0.5, color: '#d6ffff' },
+      { from: -0.5, to: -0.01, color: '#eaffff' },
+      { from: -0.01, to: 0.01, color: '#ffffff' },
+      { from: 0.01, to: 0.5, color: '#fff4ea' },
+      { from: 0.5, to: 1, color: '#ffead6' },
+      { from: 1, to: 5, color: '#ffd1a3' },
+      { from: 5, to: 12, color: '#ffc68e' },
+      { greater: 12, color: '#ffbf7f' }
+    ]);
+    chart.colorScale(colorScale);
+
+    // Sets selection mode for single selection
+    chart.interactivity().selectionMode('none');
+
+    chart.padding([10, 20, 10, 20]);
+
+    // Sets title
+    chart
+      .title()
+      .useHtml(true)
+      .enabled(true)
+      .padding([0, 0, 10, 5])
+      .align('left')
+      .text(
+        'Range difference（range1 - 2） <span style=\'font-size: 14px; color:#000000\'></span>'
+      );
+
+    // Sets chart labels
+    chart
+      .labels()
+      .enabled(true)
+      .maxFontSize(14)
+      .format(function () {
+        if (this.getData('symbol') == "o") {
+          return this.x + this.y + this.getData('symbol') + "\n" + Math.floor(this.getData('heat') * Math.pow(10, 3)) / Math.pow(10, 3)
+        } else {
+          return this.y + this.x + this.getData('symbol') + "\n" + Math.floor(this.getData('heat') * Math.pow(10, 3)) / Math.pow(10, 3)
+        }
+      });
+
+    // Turns off axes
+    chart
+      .yAxis(null)
+      .xAxis(null)
+      // Sets chart and hover chart settings
+      .stroke('#fff');
+    chart
+      .hovered()
+      .stroke('6 #fff')
+      .fill('#545f69')
+      .labels({ fontColor: '#fff' });
+
+    // Sets legend
+    chart
+      .legend()
+      .enabled(true)
+      .align('top')
+      .position('right')
+      .itemsLayout('vertical')
+      .padding([2, 10, 0, 20]);
+
+    //Sets tooltip
+    chart
+      .tooltip()
+      .titleFormat(function () {
+        var s = '';
+        if (this.getData('symbol') === 's') s = 'suited';
+        else if (this.getData('symbol') === 'u') s = 'unsuited';
+        return this.x + this.y + ' ' + s;
+      })
+      .format(function () {
+        return 'difference: ' + this.heat;
+      });
+
+    chart.container('container');
+    chart.draw();
+
+
+    // 数字別コンボ数計算
+    const inputArray = rangeText1.value.split(",");
+    const inputArray2 = rangeText2.value.split(",");
+    const cardValues = "AKQJT98765432";
+
+    let comboSums = {};
+    let comboSums2 = {};
+
+    for (let i = 0; i < cardValues.length; i++) {
+      comboSums[cardValues[i]] = 0;
+      comboSums2[cardValues[i]] = 0;
+    }
+
+    inputArray.forEach(input => {
+      const [key, value] = input.split(": ");
+      const card1 = key.charAt(0);
+      const card2 = key.charAt(2);
+      const comboValue = parseFloat(value);
+
+      if (cardValues.includes(card1) && cardValues.includes(card2)) {
+        if (card1 == card2) {
+          // Pair
+          comboSums[card1] += comboValue;
+        } else {
+          // not pair
+          comboSums[card1] += comboValue;
+          comboSums[card2] += comboValue;
+        }
+      }
+    });
+
+    inputArray2.forEach(input => {
+      const [key, value] = input.split(": ");
+      const card1 = key.charAt(0);
+      const card2 = key.charAt(2);
+      const comboValue = parseFloat(value);
+
+      if (cardValues.includes(card1) && cardValues.includes(card2)) {
+        if (card1 == card2) {
+          // Pair
+          comboSums2[card1] += comboValue;
+        } else {
+          // not pair
+          comboSums2[card1] += comboValue;
+          comboSums2[card2] += comboValue;
+        }
+      }
+    });
+
+
+
+    result = " <h3>数字別コンボ数</h3><table><tbody><tr><th>数値</th><th>レンジ１</th><th>レンジ２</th><th>差分（1-2）</th></tr>"
+    for (let i = 0; i < cardValues.length; i++) {
+      //console.log(`${cardValues[i]}：${(comboSums[cardValues[i]]).toFixed(3)}`);
+      r1 = (comboSums[cardValues[i]]).toFixed(3)
+      r2 = (comboSums2[cardValues[i]]).toFixed(3)
+      result += `<tr><td>${cardValues[i]}</td><td>${r1}</td><td>${r2}</td><td>${(r1 - r2).toFixed(3)}</td></tr>`
+    }
+    result += "</tbody></table><br><hr><br>"
+    console.log(result)
+
+    document.getElementById('output').innerHTML = `${result}`;
+
+
+
+  }
+
+
+</script>
 </body>
 </html>
