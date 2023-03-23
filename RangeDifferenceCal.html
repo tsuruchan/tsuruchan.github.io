@@ -47,6 +47,11 @@
     th {
       border: 1px solid #595959;
       border-collapse: collapse;
+      background: #f5f5f5;
+    }
+
+    table tr:nth-child(even) td {
+      background: #fff;
     }
 
     td,
@@ -322,7 +327,7 @@
 
 
 
-    result = " <h3>カード別コンボ数</h3><table width='50%'><tbody><tr><th>カード</th><th>レンジ１</th><th>レンジ２</th><th>差分（1-2）</th></tr>"
+    result = " <h3>カード別コンボ数</h3><table width='30%'><tbody><tr><th>カード</th><th>レンジ１</th><th>レンジ２</th><th>差分（1-2）</th></tr>"
     for (let i = 0; i < cardValues.length; i++) {
       //console.log(`${cardValues[i]}：${(comboSums[cardValues[i]]).toFixed(3)}`);
       r1 = (comboSums[cardValues[i]]).toFixed(3)
