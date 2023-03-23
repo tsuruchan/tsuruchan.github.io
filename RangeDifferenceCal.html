@@ -13,16 +13,41 @@
     html,
     body,
     #container {
-      width: 100%;
+      /* width: 100%; */
       height: 100%;
-      margin: 0;
+      margin: 15px;
       padding: 0;
+    }
+
+    .button {
+      display: inline-block;
+      border-radius: 10%;
+      font-size: 10pt;
+      text-align: center;
+      cursor: pointer;
+      padding: 12px 12px;
+      background: #000066;
+      color: #ffffff;
+      line-height: 1em;
+      transition: .3s;
+      box-shadow: 1px 1px 2px #666666;
+      border: 2px solid #000066;
+    }
+
+    .button:hover {
+      box-shadow: none;
+      color: #000066;
+      background: #ffffff;
+
     }
 
   </style>
 </head>
 <body>
   <div id="container">
+    <label>
+      <h3>レンジの差分計算</h3>
+    </label>
     <p>
     <label><b>レンジ１を入力</b><br></label>
     <textarea type="text" cols="100" rows="6" id="rangeText1"></textarea>
@@ -31,7 +56,7 @@
       <label><b>レンジ２を入力</b><br></label>
       <textarea type="text" cols="100" rows="6" id="rangeText2"></textarea>
       </p>
-    <input type="button" value="送信" onclick="checkButton()">
+    <input type="button" value="送信" onclick="checkButton()" class="button">
     <hr>
   </div>
 
