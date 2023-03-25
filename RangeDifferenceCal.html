@@ -283,6 +283,8 @@
 
     let comboSums = {};
     let comboSums2 = {};
+    let totalComboSums = 0;
+    let totalComboSums2 = 0;
 
     for (let i = 0; i < cardValues.length; i++) {
       comboSums[cardValues[i]] = 0;
@@ -299,10 +301,12 @@
         if (card1 == card2) {
           // Pair
           comboSums[card1] += comboValue;
+          totalComboSums += comboValue;
         } else {
           // not pair
           comboSums[card1] += comboValue;
           comboSums[card2] += comboValue;
+          totalComboSums += comboValue * 2;
         }
       }
     });
@@ -317,22 +321,27 @@
         if (card1 == card2) {
           // Pair
           comboSums2[card1] += comboValue;
+          totalComboSums2 += comboValue;
         } else {
           // not pair
           comboSums2[card1] += comboValue;
           comboSums2[card2] += comboValue;
+          totalComboSums2 += comboValue * 2;
         }
       }
     });
 
 
-
-    result = " <h3>カード別コンボ数</h3><table width='50%'><tbody><tr><th>カード</th><th>レンジ１</th><th>レンジ２</th><th>差分（1-2）</th></tr>"
+    result = " <h3>カード別コンボ数</h3><table width='70%'><tbody><tr><th>カード</th><th>レンジ１</th><th>割合(%)</th><th>レンジ２</th><th>割合(%)</th><th>差分（1-2）</th><th>割合(1/2)</th></tr>"
     for (let i = 0; i < cardValues.length; i++) {
       //console.log(`${cardValues[i]}：${(comboSums[cardValues[i]]).toFixed(3)}`);
       r1 = (comboSums[cardValues[i]]).toFixed(3)
       r2 = (comboSums2[cardValues[i]]).toFixed(3)
-      result += `<tr><td>${cardValues[i]}</td><td>${r1}</td><td>${r2}</td><td>${(r1 - r2).toFixed(3)}</td></tr>`
+      t1 = (r1 / totalComboSums * 100).toFixed(1)
+      t2 = (r2 / totalComboSums2 * 100).toFixed(1)
+      s1 = (r1 - r2).toFixed(1)
+      s2 = (t1 / t2).toFixed(1)
+      result += `<tr><td>${cardValues[i]}</td><td>${r1}</td><td>${t1}</td><td>${r2}</td><td>${t2}</td><td>${s1}</td><td>${s2}</td></tr>`
     }
     result += "</tbody></table><br><hr><br>"
     console.log(result)
